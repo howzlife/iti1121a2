@@ -20,6 +20,8 @@ class EightPuzzle extends JFrame implements ActionListener {
         this.add(b, BorderLayout.CENTER);
         this.pack();
         b.setVisible(true);
+        this.setSize(400,400);
+        this.setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -31,8 +33,6 @@ class EightPuzzle extends JFrame implements ActionListener {
         Board b;
 
         puzzleframe = new EightPuzzle();
-
-        puzzleframe.setVisible(true);
     }
 
 }

@@ -33,13 +33,8 @@ class Cell extends JButton {
 
     public void setId(int newid) {
         this.id = newid;
-        /*this.icon = new ImageIcon("data/image-0"+Integer.toString(this.id));
-          this.setIcon(this.icon);*/
-        this.setText(Integer.toString(this.id));
-        if (this.id != 0)
-            this.setVisible(true);
-        else
-            this.setVisible(false);
+        this.setVisible(true);
+        this.setIcon(new ImageIcon("data/img-0"+Integer.toString(this.id)+".png"));
     }
 
     public String toString() {
