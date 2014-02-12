@@ -55,11 +55,28 @@ class Board extends JPanel implements ActionListener {
         }
         this.revalidate();
         this.repaint();
+        this.attempts++;
         if (youwon) {
             JOptionPane.showMessageDialog(this, "You won!");
         }
     }
+    
+    //Added methods by Nick Feb 11 2014
 
+    public int getAttempts() {
+     return attempts; 
+    }
+    
+    public void increaseAttempts() {
+      attempts++;
+    }
+    public void shuffle() {
+        this.randperm.shuffle();
+    }
+    
+    //Added methods by Nick Feb 11 2014
+    
+    
     public void init() {
         int[] a;
 
@@ -81,9 +98,19 @@ class Board extends JPanel implements ActionListener {
             this.add(cells[i]);
         }
     }
-
+    
+   
+// toString method added Feb 12th 2014 by ND
     public String toString() {
-        return "";
+      String arr = "";
+      for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+          arr += "[" + cells[(i * 3) + j].toString() + "]";
+        }
+        arr += "\n";
+      }
+      arr += "\n" + "The number of moves is " + attempts;
+        return arr;
     }
 
 }
