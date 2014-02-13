@@ -4,7 +4,7 @@ import java.awt.event.*;
 import java.awt.GridLayout;
 
 class Board extends JPanel implements ActionListener {
-     
+
     private Cell[] cells;
     private RandomPermutation randperm;
     private int attempts;
@@ -12,7 +12,7 @@ class Board extends JPanel implements ActionListener {
     public Board() {
         this.setLayout(new GridLayout(3, 3));
     }
-    
+
     public void actionPerformed(ActionEvent e) {
         int i, j, pos, swap = -1;
         Cell c;
@@ -45,38 +45,25 @@ class Board extends JPanel implements ActionListener {
         this.cells[pos] = this.cells[swap];
         this.cells[swap] = c;
         this.removeAll();
-        for (i=0;i<3;i++) {
-            for (j=0;j<3;j++) {
-                this.add(cells[i*3 + j]);
-                if (this.cells[i*3 + j].getRow() != j ||
-                    this.cells[i*3 + j].getColumn() != i)
-                    youwon = false;
+        for (i=0;i<9;i++) {
+            this.add(cells[i]);
+            if ((this.cells[i].getId() == 0 && i != 8) ||
+                (this.cells[i].getId() != 0 && this.cells[i].getId() != i+1)) {
+                youwon = false;
             }
         }
         this.revalidate();
         this.repaint();
         this.attempts++;
         if (youwon) {
-            JOptionPane.showMessageDialog(this, "You won!");
+            JOptionPane.showMessageDialog(this, "You won in "+this.attempts+" moves.");
         }
     }
-    
-    //Added methods by Nick Feb 11 2014
 
-    public int getAttempts() {
-     return attempts; 
-    }
-    
-    public void increaseAttempts() {
-      attempts++;
-    }
     public void shuffle() {
         this.randperm.shuffle();
     }
-    
-    //Added methods by Nick Feb 11 2014
-    
-    
+
     public void init() {
         int[] a;
 
@@ -98,19 +85,16 @@ class Board extends JPanel implements ActionListener {
             this.add(cells[i]);
         }
     }
-    
-   
-// toString method added Feb 12th 2014 by ND
+
     public String toString() {
-      String arr = "";
-      for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-          arr += "[" + cells[(i * 3) + j].toString() + "]";
+        String arr = "";
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                arr += "[" + cells[(i * 3) + j].toString() + "]";
+            }
+            arr += "\n";
         }
-        arr += "\n";
-      }
-      arr += "\n" + "The number of moves is " + attempts;
+        arr += "\nThe number of moves is " + attempts;
         return arr;
     }
-
 }

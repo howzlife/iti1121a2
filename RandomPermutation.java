@@ -24,7 +24,8 @@ class RandomPermutation {
         // Starts at the end of the array (minus 1 so the space is always at the
         // end), randomly selecting an earlier index in the array and switching
         // the values at the current point and the randomly selected point
-        for (int k = arr.length - 2;k>0; k--) {
+        // If we go all the way to the end, the permutation is unsolvable
+        for (int k = arr.length - 2;k>1; k--) {
             int i = generator.nextInt(k);
             int itemid = this.arr[i];
             this.arr[i] = this.arr[k];
@@ -35,5 +36,19 @@ class RandomPermutation {
 
     public int[] toArray() {
         return this.arr;
+    }
+
+    public String toString() {
+        String result;
+
+        result = "";
+        for (int i=0;i<9;i++) {
+            result += "["+this.arr[i]+"]";
+            if (i%3 == 0)
+                result += "\n";
+            else
+                result += " ";
+        }
+        return result;
     }
 }
