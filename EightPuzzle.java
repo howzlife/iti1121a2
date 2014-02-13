@@ -6,31 +6,34 @@ import java.awt.BorderLayout;
 
 class EightPuzzle extends JFrame implements ActionListener {
 
+    private JLabel label;
     private Board puzzleboard;
+    private final String initialLabel = "Attempts: 0";
 
     /* Constructor */
 
     public EightPuzzle() {
         super("Eight Puzzle");
 
-        Board b;
         JButton reset;
+
+        this.puzzleboard = new Board(this);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
 
-        b = new Board();
-        b.init();
-        this.add(b, BorderLayout.CENTER);
-        this.puzzleboard = b;
-        this.add( new JLabel("Attempts: " + b.getAttempts()), BorderLayout.NORTH);
+        this.puzzleboard.init();
+        this.add(this.puzzleboard, BorderLayout.CENTER);
+
+        this.label =  new JLabel(this.initialLabel);
+        this.add(this.label, BorderLayout.NORTH);
 
         reset = new JButton("Start new game");
         reset.addActionListener(this);
         this.add(reset, BorderLayout.SOUTH);
 
         this.pack();
-        b.setVisible(true);
+        this.puzzleboard.setVisible(true);
         this.setSize(420,480);
         this.setVisible(true);
     }
@@ -38,10 +41,18 @@ class EightPuzzle extends JFrame implements ActionListener {
     /* Public methods */
 
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Reset!");
-        this.puzzleboard.init();
-        this.revalidate();
-        this.repaint();
+        String newLabel;
+
+        newLabel = e.getActionCommand();
+        if (e.getSource() != this.puzzleboard || newLabel.equals(this.initialLabel)) {
+            this.puzzleboard.removeAll();
+            this.puzzleboard.init();
+            this.label.setText(this.initialLabel);
+            this.revalidate();
+            this.repaint();
+        } else {
+            this.label.setText(newLabel);
+        }
     }
 
     public static void main(String[] args) {

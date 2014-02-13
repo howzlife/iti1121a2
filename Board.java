@@ -8,9 +8,11 @@ class Board extends JPanel implements ActionListener {
     private Cell[] cells;
     private RandomPermutation randperm;
     private int attempts;
+    private EightPuzzle parent;
 
-    public Board() {
+    public Board(EightPuzzle parent) {
         this.setLayout(new GridLayout(3, 3));
+        this.parent = parent;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -57,6 +59,9 @@ class Board extends JPanel implements ActionListener {
         this.attempts++;
         if (youwon) {
             JOptionPane.showMessageDialog(this, "You won in "+this.attempts+" moves.");
+            this.parent.actionPerformed(new ActionEvent(this, 0, "Attempts: 0"));
+        } else {
+            this.parent.actionPerformed(new ActionEvent(this, 0, "Attempts: "+this.attempts));
         }
     }
 
