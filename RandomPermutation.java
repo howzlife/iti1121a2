@@ -34,10 +34,12 @@ class RandomPermutation {
 
     }
 
+    //takes 2D array and transforms to 1D array
     public int[] toArray() {
         return this.arr;
     }
 
+    //Takes 2D array and returns a string version of the array. 
     public String toString() {
         String result;
 

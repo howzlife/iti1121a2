@@ -5,21 +5,25 @@ import java.awt.GridLayout;
 
 class Board extends JPanel implements ActionListener {
 
+    //Declare class variables
     private Cell[] cells;
     private RandomPermutation randperm;
     private int attempts;
     private EightPuzzle parent;
 
+    //Constructor - passing in a reference to EightPuzzle object
     public Board(EightPuzzle parent) {
         this.setLayout(new GridLayout(3, 3));
         this.parent = parent;
     }
 
+    //ActionPerformed - used to swap tiles when clicked, and declare a winning state
     public void actionPerformed(ActionEvent e) {
         int i, j, pos, swap = -1;
         Cell c;
         boolean youwon;
-
+        
+        //if cell is not clicked on, do nothing. 
         if (!(e.getSource() instanceof Cell))
             return;
         youwon = true;
@@ -33,6 +37,8 @@ class Board extends JPanel implements ActionListener {
                 break;
             }
         }
+        
+        //depending on where is clicked, checks if white cell is next to it. If it is, keeps its position stored in "swap" variable. 
         if (pos > 2 && this.cells[pos-3].getId() == 0) {
             swap = pos-3;
         } else if(pos > 0 && this.cells[pos-1].getId() == 0) {
@@ -42,6 +48,8 @@ class Board extends JPanel implements ActionListener {
         } else if (pos < 6 && this.cells[pos+3].getId() == 0) {
             swap = pos+3;
         }
+        
+        //swaps clicked cell and white cell
         if (swap<0)
             return;
         this.cells[pos] = this.cells[swap];
@@ -54,6 +62,8 @@ class Board extends JPanel implements ActionListener {
                 youwon = false;
             }
         }
+        
+        //re-sets the board with new positions, and increases attempts. If winning state is achieved, puts out winning message with number of attempts, then resets the board. 
         this.revalidate();
         this.repaint();
         this.attempts++;
@@ -65,10 +75,12 @@ class Board extends JPanel implements ActionListener {
         }
     }
 
+    //shuffle method, shuffles the board through RandomPermutation class
     public void shuffle() {
         this.randperm.shuffle();
     }
 
+    //Initializes the board, and sets a random permutation. 
     public void init() {
         int[] a;
 
@@ -91,6 +103,7 @@ class Board extends JPanel implements ActionListener {
         }
     }
 
+    //Prints the board to a string, including number of attempts
     public String toString() {
         String arr = "";
         for (int i = 0; i < 3; i++) {
