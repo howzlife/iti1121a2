@@ -39,7 +39,7 @@ class RandomPermutation {
         return this.arr;
     }
 
-    //Takes 2D array and returns a string version of the array. 
+    //Takes 2D array and returns a string version of the array.
     public String toString() {
         String result;
 

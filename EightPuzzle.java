@@ -16,7 +16,7 @@ class EightPuzzle extends JFrame implements ActionListener {
     public EightPuzzle() {
         super("Eight Puzzle");
 
-        
+
         JButton reset;
         this.puzzleboard = new Board(this);
 
@@ -27,7 +27,7 @@ class EightPuzzle extends JFrame implements ActionListener {
         //initiate puzzle board - see Board class for more detail
         this.puzzleboard.init();
         this.add(this.puzzleboard, BorderLayout.CENTER);
-        
+
         this.label =  new JLabel(this.initialLabel);
         this.add(this.label, BorderLayout.NORTH);
 

@@ -3,7 +3,7 @@ import javax.swing.ImageIcon;
 import java.awt.event.*;
 
 class Cell extends JButton {
-    
+
   //Class variables
     private int id, row, col;
     private Board puzzleboard;
@@ -19,7 +19,7 @@ class Cell extends JButton {
     }
 
     //Public Methods, all quite obvious as to what they do
-    
+
     public int getColumn() {
         return this.col;
     }
