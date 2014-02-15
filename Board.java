@@ -1,11 +1,17 @@
-import javax.swing.JPanel;
-import javax.swing.JOptionPane;
+import java.awt.image.BufferedImage;
+import java.awt.Image;
 import java.awt.event.*;
 import java.awt.GridLayout;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 class Board extends JPanel implements ActionListener {
 
     //Declare class variables
+    private Image[] cellimg;
     private Cell[] cells;
     private RandomPermutation randperm;
     private int attempts;
@@ -81,6 +87,10 @@ class Board extends JPanel implements ActionListener {
         this.randperm.shuffle();
     }
 
+    public void setImageSource(Image img) {
+        //this.cellimg
+    }
+
     //Initializes the board, and sets a random permutation.
     public void init() {
         int[] a;
@@ -98,8 +108,20 @@ class Board extends JPanel implements ActionListener {
         }
 
         a = this.randperm.toArray();
+        this.cellimg = new Image[9];
+        for (int i=0;i<9;i++) {
+            while (true) {
+                try {
+                    this.cellimg[i] = ImageIO.read(new File("data/img-0"+i+".png"));
+                    break;
+                } catch (IOException except) {
+                    continue;
+                }
+            }
+        }
         for (int i=0;i<a.length;i++) {
             this.cells[i].setId(a[i]);
+            this.cells[i].setImage(this.cellimg[a[i]]);
             this.add(cells[i]);
         }
     }

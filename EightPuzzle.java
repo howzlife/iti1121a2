@@ -1,14 +1,21 @@
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import java.awt.event.*;
 import java.awt.BorderLayout;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.event.*;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 
 class EightPuzzle extends JFrame implements ActionListener {
 
-  //Declare class variables
+    //Declare class variables
     private JLabel label;
-    private Board puzzleboard;
+    private Board puzzleBoard;
+    private JButton selectImgButton;
     private final String initialLabel = "Attempts: 0";
 
     /* Constructor */
@@ -16,17 +23,16 @@ class EightPuzzle extends JFrame implements ActionListener {
     public EightPuzzle() {
         super("Eight Puzzle");
 
-
         JButton reset;
-        this.puzzleboard = new Board(this);
+        this.puzzleBoard = new Board(this);
 
         //Set JFrame to close when we close it
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
 
         //initiate puzzle board - see Board class for more detail
-        this.puzzleboard.init();
-        this.add(this.puzzleboard, BorderLayout.CENTER);
+        this.puzzleBoard.init();
+        this.add(this.puzzleBoard, BorderLayout.CENTER);
 
         this.label =  new JLabel(this.initialLabel);
         this.add(this.label, BorderLayout.NORTH);
@@ -37,7 +43,7 @@ class EightPuzzle extends JFrame implements ActionListener {
         this.add(reset, BorderLayout.SOUTH);
 
         this.pack();
-        this.puzzleboard.setVisible(true);
+        this.puzzleBoard.setVisible(true);
         this.setSize(420,480);
         this.setVisible(true);
     }
@@ -46,12 +52,28 @@ class EightPuzzle extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         String newLabel;
+        Object source;
+        JFileChooser filechooser;
+        Image chosenimg;
 
         //if board is clicked on, or if current number of attempts = 0, update number of attempts on board
         newLabel = e.getActionCommand();
-        if (e.getSource() != this.puzzleboard || newLabel.equals(this.initialLabel)) {
-            this.puzzleboard.removeAll();
-            this.puzzleboard.init();
+        source = e.getSource();
+        if (source == this.selectImgButton) {
+            filechooser = new JFileChooser();
+            while (filechooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION);
+            while (true) {
+                try {
+                    chosenimg = ImageIO.read(filechooser.getSelectedFile());
+                    break;
+                } catch (IOException except) {
+                    continue;
+                }
+            }
+            this.puzzleBoard.setImageSource(chosenimg);
+        } else if (source != this.puzzleBoard || newLabel.equals(this.initialLabel)) {
+            this.puzzleBoard.removeAll();
+            this.puzzleBoard.init();
             this.label.setText(this.initialLabel);
             this.revalidate();
             this.repaint();

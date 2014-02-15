@@ -1,6 +1,7 @@
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
 import java.awt.event.*;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 class Cell extends JButton {
 
@@ -35,7 +36,10 @@ class Cell extends JButton {
     public void setId(int newid) {
         this.id = newid;
         this.setVisible(true);
-        this.setIcon(new ImageIcon("data/img-0"+Integer.toString(this.id)+".png"));
+    }
+
+    public void setImage(Image img) {
+        this.setIcon(new ImageIcon(img));
     }
 
     public String toString() {
