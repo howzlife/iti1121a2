@@ -21,7 +21,24 @@ class Board extends JPanel implements ActionListener {
     public Board(EightPuzzle parent) {
         this.setLayout(new GridLayout(3, 3));
         this.parent = parent;
+        this.cellimg = null;
     }
+
+    /* private methods */
+
+    private void updateCellImages() {
+        int[] a;
+
+        a = this.randperm.toArray();
+        for (int i=0;i<a.length;i++) {
+            this.cells[i].setId(a[i]);
+            this.cells[i].setImage(this.cellimg[a[i]]);
+            this.add(cells[i]);
+        }
+        this.parent.setSize(60 + this.cellimg[1].getWidth(null)*3, 120 + this.cellimg[1].getHeight(null)*3);
+    }
+
+    /* public methods */
 
     //ActionPerformed - used to swap tiles when clicked, and declare a winning state
     public void actionPerformed(ActionEvent e) {
@@ -87,8 +104,15 @@ class Board extends JPanel implements ActionListener {
         this.randperm.shuffle();
     }
 
-    public void setImageSource(Image img) {
-        //this.cellimg
+    public void setImageSource(BufferedImage img) {
+        int width, height;
+
+        width = img.getWidth(null) / 3;
+        height = img.getHeight() / 3;
+        for (int i=0;i<8;i++) {
+            this.cellimg[i+1] = img.getSubimage((i%3)*width, (i/3)*height, width, height);
+        }
+        this.updateCellImages();
     }
 
     //Initializes the board, and sets a random permutation.
@@ -107,23 +131,17 @@ class Board extends JPanel implements ActionListener {
             }
         }
 
-        a = this.randperm.toArray();
-        this.cellimg = new Image[9];
-        for (int i=0;i<9;i++) {
-            while (true) {
+        if (this.cellimg == null) {
+            this.cellimg = new Image[9];
+            for (int i=0;i<9;i++) {
                 try {
                     this.cellimg[i] = ImageIO.read(new File("data/img-0"+i+".png"));
-                    break;
                 } catch (IOException except) {
                     continue;
                 }
             }
         }
-        for (int i=0;i<a.length;i++) {
-            this.cells[i].setId(a[i]);
-            this.cells[i].setImage(this.cellimg[a[i]]);
-            this.add(cells[i]);
-        }
+        this.updateCellImages();
     }
 
     //Prints the board to a string, including number of attempts
@@ -138,4 +156,5 @@ class Board extends JPanel implements ActionListener {
         arr += "\nThe number of moves is " + attempts;
         return arr;
     }
+
 }

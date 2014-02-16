@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
+import javax.swing.JPanel;
 
 class EightPuzzle extends JFrame implements ActionListener {
 
@@ -24,6 +24,8 @@ class EightPuzzle extends JFrame implements ActionListener {
         super("Eight Puzzle");
 
         JButton reset;
+        JPanel buttonpanel;
+
         this.puzzleBoard = new Board(this);
 
         //Set JFrame to close when we close it
@@ -37,11 +39,19 @@ class EightPuzzle extends JFrame implements ActionListener {
         this.label =  new JLabel(this.initialLabel);
         this.add(this.label, BorderLayout.NORTH);
 
+        buttonpanel = new JPanel();
+        this.add(buttonpanel, BorderLayout.SOUTH);
+
         // start new game button - set to South location, when clicked re-shuffles the board
         reset = new JButton("Start new game");
         reset.addActionListener(this);
-        this.add(reset, BorderLayout.SOUTH);
+        buttonpanel.add(reset);
 
+        this.selectImgButton = new JButton("Select custom image");
+        this.selectImgButton.addActionListener(this);
+        buttonpanel.add(this.selectImgButton);
+
+        buttonpanel.setVisible(true);
         this.pack();
         this.puzzleBoard.setVisible(true);
         this.setSize(420,480);
@@ -54,21 +64,22 @@ class EightPuzzle extends JFrame implements ActionListener {
         String newLabel;
         Object source;
         JFileChooser filechooser;
-        Image chosenimg;
+        BufferedImage chosenimg;
+        int filechooseresult;
 
         //if board is clicked on, or if current number of attempts = 0, update number of attempts on board
         newLabel = e.getActionCommand();
         source = e.getSource();
         if (source == this.selectImgButton) {
             filechooser = new JFileChooser();
-            while (filechooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION);
-            while (true) {
-                try {
+            filechooseresult = filechooser.showOpenDialog(this);
+            try {
+                if (filechooseresult == JFileChooser.APPROVE_OPTION)
                     chosenimg = ImageIO.read(filechooser.getSelectedFile());
-                    break;
-                } catch (IOException except) {
-                    continue;
-                }
+                else
+                    return;
+            } catch (IOException except) {
+                return;
             }
             this.puzzleBoard.setImageSource(chosenimg);
         } else if (source != this.puzzleBoard || newLabel.equals(this.initialLabel)) {
